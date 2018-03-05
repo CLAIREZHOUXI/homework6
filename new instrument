@@ -1,0 +1,68 @@
+// A sound file object
+var song;
+var sampleIsPlaying = false;
+
+function preload() {
+  // Load a sound file
+  song = loadSound('Korean temple blocks 2.wav');
+}
+
+function setup() {
+  createCanvas(400, 400);
+  colorMode(HSB);
+  textAlign(CENTER);
+  text('Click to play!', 200, 200);
+  fill(255);
+
+  // Loop the sound 
+  song.loop();
+}
+
+function draw() {
+  background(0);
+
+  // Set the volume:range between 0 and 1
+  var volume = map(mouseX, 0, width, 0, 5);
+  volume = constrain(volume, 0, 5);
+  song.amp(volume);
+
+  // Set the rate to a range between 0.1 and 4
+  // Changing the rate alters the pitch
+  var speed = map(mouseY, 20, height, 0, 2);
+  speed = constrain(speed, 0.11, 4);
+  song.rate(speed);
+
+  // Draw some circles to show what is going on
+  fill(179,100,93);
+  ellipse(mouseX-40, mouseY, 48, 48);
+  
+  fill(0);
+  ellipse(mouseX-40, mouseY, 25, 48);
+  
+  //eyeball2
+  fill(139, 100, 92);
+  ellipse(mouseX+40, mouseY, 48, 48);
+  
+  fill(0);
+  ellipse(mouseX+40, mouseY, 25, 48);
+}
+
+
+function mouseClicked() {
+  if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+    background(20);
+
+    if (sampleIsPlaying) {
+      song.stop();
+      sampleIsPlaying = false;
+      text('Click to play!', width / 2, height / 2);
+    } else {
+      //loop our sound element until we
+      //call ele.stop() on it.
+      song.loop();
+
+      sampleIsPlaying = true;
+      text('Click to stop!', width / 2, height / 2);
+    }
+  }
+}
